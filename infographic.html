@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Wreck My House Project Plan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fafafa;
+            color: #707070;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2, h3 {
+            color: #707070;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 2.2em;
+            border-bottom: 2px solid #b6d7a8;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-top: 40px;
+            padding-top: 10px;
+            border-top: 2px solid #b6d7a8;
+        }
+        h3 {
+            font-size: 1.4em;
+            margin-top: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background: #e7e7e7;
+            color: #333;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 5px solid #b6d7a8;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+        ul li:hover {
+            background: #eeeeee;
+        }
+        code {
+            background: #eeeeee;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.95em;
+            color: #333;
+        }
+        pre {
+            background: #fafafa;
+            border: 1px solid #b6d7a8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: #eeeeee;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            color: #707070;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid #b6d7a8;
+            background: #eeeeee;
+            color: #707070;
+            font-size: 0.9em;
+        }
+        a {
+            color: #707070;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Project Plan: Don't Wreck My House</h1>
+        </div>
+
+        <h2>High-level Requirements</h2>
+        <ul>
+            <li>View Reservations: Display all reservations for a given host.</li>
+            <li>Add a Reservation: Create a new reservation for a guest with a specific host.</li>
+            <li>Edit a Reservation: Modify the dates or details of an existing reservation.</li>
+            <li>Cancel a Reservation: Remove a reservation from the system.</li>
+        </ul>
+
+        <h2>Data Model</h2>
+        <h3>Reservation</h3>
+        <ul>
+            <li>ID: A unique identifier for the reservation (Integer).</li>
+            <li>Start Date: The start date of the reservation (LocalDate).</li>
+            <li>End Date: The end date of the reservation (LocalDate).</li>
+            <li>Guest: The guest making the reservation (Guest object).</li>
+            <li>Host: The host providing the accommodation (Host object).</li>
+            <li>Total: The total cost of the reservation (BigDecimal).</li>
+        </ul>
+
+        <h3>Host</h3>
+        <ul>
+            <li>ID: A unique identifier for the host (UUID or String).</li>
+            <li>Last Name: The host's last name (String).</li>
+            <li>Email: The host's email address (String).</li>
+            <li>Phone: The host's phone number (String).</li>
+            <li>Address: The host's address (String).</li>
+            <li>City: The city where the host's property is located (String).</li>
+            <li>State: The state where the host's property is located (String).</li>
+            <li>Postal Code: The postal code of the property location (String).</li>
+            <li>Standard Rate: The regular rate for a reservation per day (BigDecimal).</li>
+            <li>Weekend Rate: The rate for a reservation on weekends (BigDecimal).</li>
+        </ul>
+
+        <h3>Guest</h3>
+        <ul>
+            <li>ID: A unique identifier for the guest (Integer).</li>
+            <li>First Name: The guest's first name (String).</li>
+            <li>Last Name: The guest's last name (String).</li>
+            <li>Email: The guest's email address (String).</li>
+            <li>Phone: The guest's phone number (String).</li>
+            <li>State: The guest's state of residence (String).</li>
+        </ul>
+
+        <h2>Validation Rules</h2>
+        <ul>
+            <li>Reservation Dates: Start date must be before the end date, and both dates must be in the future.</li>
+            <li>Guest and Host: Both must exist and be valid in the system before a reservation can be made.</li>
+            <li>Overlapping Reservations: No two reservations for the same host can overlap.</li>
+            <li>Email Format: Validate that guest and host emails are in a proper format.</li>
+            <li>Reservation ID: Must be a positive integer.</li>
+        </ul>
+
+        <h2>Technical Requirements</h2>
+        <ul>
+            <li>Architecture: Follows MVC (Model-View-Controller) architecture.</li>
+            <li>Data Storage: Reservation data is stored in CSV files. Each host has a dedicated file for their reservations.</li>
+            <li>Custom Exceptions: Use custom exceptions for handling validation and data access errors.</li>
+            <li>Dependency Injection: Use DI to manage dependencies between services, repositories, and controllers.</li>
+            <li>Unit and Integration Testing: Comprehensive test coverage using JUnit 5.</li>
+        </ul>
+
+        <h2>Package/Class Overview</h2>
+        <pre><code>src
+├───main
+│   └───java
+│       └───dwmh
+│           │   App.java                          -- Application entry point
+│           │
+│           ├───data
+│           │       DataException.java            -- Custom data layer exception
+│           │       GuestRepository.java          -- Interface for guest data access
+│           │       HostRepository.java           -- Interface for host data access
+│           │       ReservationRepository.java    -- Interface for reservation data access
+│           │       GuestRepositoryImpl.java      -- Implementation of guest data access
+│           │       HostRepositoryImpl.java       -- Implementation of host data access
+│           │       ReservationRepositoryImpl.java-- Implementation of reservation data access
+│           │
+│           ├───domain
+│           │       Guest.java                    -- Guest model
+│           │       Host.java                     -- Host model
+│           │       Reservation.java              -- Reservation model
+│           │       ReservationService.java       -- Interface for reservation services
+│           │       ReservationServiceImpl.java   -- Implementation of reservation services
+│           │
+│           ├───ui
+│           │       Controller.java               -- Main application controller
+│           │       View.java                     -- Handles user input and output
+│           │
+└───test
+    └───java
+        └───dwmh
+            ├───data
+            │       ReservationRepositoryImplTest.java -- Tests for ReservationRepositoryImpl
+            │
+            ├───domain
+            │       ReservationServiceImplTest.java    -- Tests for ReservationServiceImpl
+            │
+            └───ui
+                    AppTest.java                      -- Tests for App class
+                    ConsoleControllerTest.java        -- Tests for Controller class</code></pre>
+
+        <h2>Class Details</h2>
+        <h3>App</h3>
+        <ul>
+            <li><strong>public static void main(String[] args)</strong>: Entry point of the application. Initializes and runs the Controller with all necessary dependencies.</li>
+        </ul>
+        
+        <h3>data.DataException</h3>
+        <ul>
+            <li><strong>Constructor:</strong> public DataException(String message, Throwable cause) - Custom exception class for handling data-related errors.</li>
+        </ul>
+
+        <!-- Continue with other classes and their methods as needed -->
+
+    </div>
+
+    <footer>
+        &copy; 2024 Don't Wreck My House Project | Designed by <a href="https://github.com/shashw4t" style="color: #b67d51;">@shashw4t on Github</a>
+    </footer>
+</body>
+</html>

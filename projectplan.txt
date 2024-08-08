@@ -1,0 +1,106 @@
+===============================================================================
+                              PROJECT PLAN
+===============================================================================
+                               Don't Wreck My House
+-------------------------------------------------------------------------------
+
+  Project Overview
+  ----------------
+  Project Name  : Don't Wreck My House
+  Objective     : Develop a Java-based application that allows an administrator
+                  to manage reservations for guests with hosts, similar to Airbnb.
+
+-------------------------------------------------------------------------------
+
+  Scope
+  -----
+  Core Features:
+  - View Reservations for Host
+  - Make a Reservation
+  - Edit a Reservation
+  - Cancel a Reservation
+
+  Validation Requirements:
+  - Ensure no overlapping reservations.
+  - Validate dates, guests, and hosts.
+
+  Technical Requirements:
+  - Maven project setup.
+  - Spring dependency injection.
+  - Use BigDecimal for financial calculations.
+  - Use LocalDate for dates.
+  - Implement file I/O for data storage.
+
+-------------------------------------------------------------------------------
+
+  Deliverables
+  ------------
+  - Project Plan Document
+  - Class Diagram
+  - Java Maven Project
+  - Test Suite
+  - Task Schedule
+  - Documentation
+
+-------------------------------------------------------------------------------
+
+  Task List and Schedule
+  ----------------------
+  Week 1:
+  - Day 1  : Project Setup, Initial Planning, and Class Diagram Creation.
+  - Day 2-3: Implement View Reservations for Host feature.
+  - Day 4  : Implement Make a Reservation feature.
+  - Day 5  : Implement Edit a Reservation feature.
+  - Day 6  : Implement Cancel a Reservation feature.
+  - Day 7  : Testing and Bug Fixes.
+
+-------------------------------------------------------------------------------
+
+  Class Diagram
+  -------------
+  Classes:
+  - Reservation
+  - Guest
+  - Host
+  - ReservationService
+  - ReservationRepository
+  - HostRepository
+  - GuestRepository
+  - Controller
+  - View
+
+  *The class diagram will visualize the relationships and dependencies between
+  these classes.*
+
+-------------------------------------------------------------------------------
+
+  Detailed Design
+  ---------------
+  Reservation Class:
+  - Attributes: id, startDate, endDate, total, Guest, Host
+  - Methods   : calculateTotal(), isOverlapping(Reservation)
+
+  Guest Class:
+  - Attributes: id, name, email
+  - Methods   : getFullName()
+
+  Host Class:
+  - Attributes: id, location, standardRate, weekendRate
+  - Methods   : calculateRate(LocalDate date)
+
+  Service Classes:
+  - Handle business logic like validating reservations, calculating totals,
+    and interacting with repositories.
+
+  Repository Classes:
+  - Handle file I/O operations for storing and retrieving data.
+
+-------------------------------------------------------------------------------
+
+  GitHub Integration
+  ------------------
+  - Create a `mastery-project-plan` branch.
+  - Push the project plan files, including the schedule, class diagram,
+    and detailed design.
+
+===============================================================================

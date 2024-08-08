@@ -1,0 +1,165 @@
+Project Plan: Don't Wreck My House
+
+High-level Requirements
+The user is managing reservations for a vacation rental property. They should have the ability to:
+- View Reservations: Display all reservations for a given host.
+- Add a Reservation: Create a new reservation for a guest with a specific host.
+- Edit a Reservation: Modify the dates or details of an existing reservation.
+- Cancel a Reservation: Remove a reservation from the system.
+
+Data Model
+
+Reservation
+- ID: A unique identifier for the reservation (Integer).
+- Start Date: The start date of the reservation (LocalDate).
+- End Date: The end date of the reservation (LocalDate).
+- Guest: The guest making the reservation (Guest object).
+- Host: The host providing the accommodation (Host object).
+- Total: The total cost of the reservation (BigDecimal).
+
+Host
+- ID: A unique identifier for the host (UUID or String).
+- Last Name: The host's last name (String).
+- Email: The host's email address (String).
+- Phone: The host's phone number (String).
+- Address: The host's address (String).
+- City: The city where the host's property is located (String).
+- State: The state where the host's property is located (String).
+- Postal Code: The postal code of the property location (String).
+- Standard Rate: The regular rate for a reservation per day (BigDecimal).
+- Weekend Rate: The rate for a reservation on weekends (BigDecimal).
+
+Guest
+- ID: A unique identifier for the guest (Integer).
+- First Name: The guest's first name (String).
+- Last Name: The guest's last name (String).
+- Email: The guest's email address (String).
+- Phone: The guest's phone number (String).
+- State: The guest's state of residence (String).
+
+Validation Rules
+- Reservation Dates: Start date must be before the end date, and both dates must be in the future.
+- Guest and Host: Both must exist and be valid in the system before a reservation can be made.
+- Overlapping Reservations: No two reservations for the same host can overlap.
+- Email Format: Validate that guest and host emails are in a proper format.
+- Reservation ID: Must be a positive integer.
+
+Technical Requirements
+- Architecture: Follows MVC (Model-View-Controller) architecture.
+- Data Storage: Reservation data is stored in CSV files. Each host has a dedicated file for their reservations.
+- Custom Exceptions: Use custom exceptions for handling validation and data access errors.
+- Dependency Injection: Use DI to manage dependencies between services, repositories, and controllers.
+- Unit and Integration Testing: Comprehensive test coverage using JUnit 5.
+
+Package/Class Overview
+
+src
+├───main
+│   └───java
+│       └───dwmh
+│           │   App.java                          -- Application entry point
+│           │
+│           ├───data
+│           │       DataException.java            -- Custom data layer exception
+│           │       GuestRepository.java          -- Interface for guest data access
+│           │       HostRepository.java           -- Interface for host data access
+│           │       ReservationRepository.java    -- Interface for reservation data access
+│           │       GuestRepositoryImpl.java      -- Implementation of guest data access
+│           │       HostRepositoryImpl.java       -- Implementation of host data access
+│           │       ReservationRepositoryImpl.java-- Implementation of reservation data access
+│           │
+│           ├───domain
+│           │       Guest.java                    -- Guest model
+│           │       Host.java                     -- Host model
+│           │       Reservation.java              -- Reservation model
+│           │       ReservationService.java       -- Interface for reservation services
+│           │       ReservationServiceImpl.java   -- Implementation of reservation services
+│           │
+│           ├───ui
+│           │       Controller.java               -- Main application controller
+│           │       View.java                     -- Handles user input and output
+│           │
+└───test
+    └───java
+        └───dwmh
+            ├───data
+            │       ReservationRepositoryImplTest.java -- Tests for ReservationRepositoryImpl
+            │
+            ├───domain
+            │       ReservationServiceImplTest.java    -- Tests for ReservationServiceImpl
+            │
+            └───ui
+                    AppTest.java                      -- Tests for App class
+                    ConsoleControllerTest.java        -- Tests for Controller class
+
+Class Details
+
+App
+- public static void main(String[]): Entry point of the application. Initializes and runs the Controller with all necessary dependencies.
+
+data.DataException
+- Custom exception class for handling data-related errors.
+- Constructor: public DataException(String message, Throwable cause)
+
+data.GuestRepository
+- Interface defining methods for accessing guest data.
+- List<Guest> findAll()
+- Guest findById(int id)
+- Guest findByEmail(String email)
+
+data.HostRepository
+- Interface defining methods for accessing host data.
+- List<Host> findAll()
+- Host findById(String id)
+- Host findByEmail(String email)
+
+data.ReservationRepository
+- Interface defining methods for accessing reservation data.
+- List<Reservation> findByHost(Host host)
+- Reservation add(Reservation reservation)
+- boolean update(Reservation reservation)
+- boolean deleteById(int reservationId)
+
+domain.Guest
+- Model class representing a guest.
+- Fields: id, firstName, lastName, email, phone, state
+- Includes full getters and setters.
+
+domain.Host
+- Model class representing a host.
+- Fields: id, lastName, email, phone, address, city, state, postalCode, standardRate, weekendRate
+- Includes full getters and setters.
+
+domain.Reservation
+- Model class representing a reservation.
+- Fields: id, startDate, endDate, guest, host, total
+- Includes full getters and setters.
+- Overrides equals and hashCode.
+
+domain.ReservationService
+- Interface defining reservation-related operations.
+- List<Reservation> findReservationsByHost(Host host)
+- Reservation makeReservation(Guest guest, Host host, LocalDate startDate, LocalDate endDate)
+- Reservation editReservation(Reservation reservation, LocalDate newStartDate, LocalDate newEndDate)
+- boolean cancelReservation(Reservation reservation)
+
+domain.ReservationServiceImpl
+- Implements ReservationService.
+- Handles validation, business logic, and interaction with the ReservationRepository.
+
+ui.Controller
+- Main controller that manages the application flow.
+- public Controller(View, ReservationService): Constructor that injects dependencies.
+- public void run(): Kicks off the application, displays the main menu.
+- private void viewReservations(): Handles viewing reservations.
+- private void addReservation(): Handles adding a new reservation.
+- private void editReservation(): Handles editing an existing reservation.
+- private void cancelReservation(): Handles canceling a reservation.
+
+ui.View
+- Handles all user interactions.
+- public int displayMainMenu(): Displays the main menu and returns the user's selection.
+- public void printReservations(List<Reservation> reservations): Displays a list of reservations.
+- public Reservation makeReservation(): Prompts the user to input details for a new reservation.
+- public Reservation editReservation(Reservation reservation): Allows the user to edit an existing reservation.
+- public void showError(String message): Displays error messages to the user.
